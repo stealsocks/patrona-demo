@@ -1,0 +1,77 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/update.css" />
+</head>
+
+<body>
+    {{> nav }}
+
+    <main>
+        <h1>
+            Update {{ thingName }}
+        </h1>
+    <div id="update-holder"> 
+        <div id="update-title"> {{ thingName }} </div>
+
+        <div id="update-subtitle" class="faded"> Confirm iteration #{{ currentIteration }}</div>
+
+        <div class="input-header"> Update description:</div>
+
+        <textarea id="update-input" placeholder="Provide a short description (including any links) of the new iteration..."></textarea>
+
+        <div class="single-line">Funding to be recieved after this update: ${{ payOut }}</div>
+
+        <button id="update-confirm-button" onclick="makeUpdate()"> Make update </button>
+    
+    </div>
+    </main>
+
+<script>
+
+    let thingID = {{ thingID }}
+    function $(id){ return document.getElementById(id) }
+
+    function makeUpdate(){
+
+        let updateDescription = $("update-input").value
+
+           fetch('/things/'+thingID+"/update",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    key: "walletSignature",
+                    type: "updateProfile",
+                    updateDescription: updateDescription,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        ).then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Something went wrong');
+        })
+            .then((responseJson) => {
+
+                console.log(responseJson)
+
+                if (responseJson.success == true) {
+                    window.location = "/profile"
+                }
+
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+
+    }
+       
+</script>
+
+</body>
+
+</html>

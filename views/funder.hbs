@@ -1,0 +1,64 @@
+<html>
+
+<head>
+<link rel="stylesheet" href="/css/global.css" />
+<link rel="stylesheet" href="/css/profile.css" />
+</head>
+
+<body>
+
+{{> nav }}
+
+    <main>
+        <h1>
+            {{ username }}
+        </h1>
+
+        <div id="pledged"> has pledged ${{ totalAmountPledged }} to 3 Doers</div>
+
+        <div id="bio"> {{ bio }} </div>
+
+        <div class="list">
+            <div class="list-title">
+                Funding:
+            </div>
+
+            {{#if thingsBeingFunded.length}}
+
+            {{#each thingsBeingFunded}}
+            <div class="list-item">
+                <div class="list-item-title">
+                    {{ this.doerName }}'s <a href="/things/{{ this.thingID }}">{{ this.thingName }}</a>
+                </div>
+                <div class="top-right">since <b>{{ this.startDate}}</b></div>
+                
+                <div class="feed-item-list">
+                
+                    <div class="feed-item-list-entry">
+                        <div class="left"> Pledged: </div>
+                        <div class="right"> ${{ this.amountPledged }} </div>
+                    </div>
+
+                    {{!-- <div class="feed-item-list-entry">
+                        <div class="left">  Paid out:</div>
+                        <div class="right"> {{ this.paidOut }} </div>
+                    </div> --}}
+                
+                </div>
+            
+            </div>
+
+            {{/each}}
+
+            {{else}}
+            {{ username }} is not funding any Things
+            {{/if}}
+            
+        </div>
+
+
+    </main>
+
+</body>
+
+</html>

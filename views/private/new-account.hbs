@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/new-account.css" />
+</head>
+
+<body>
+    <div id="middle">
+
+        <h2>Choose a username</h2>
+        <br><br>
+        <input id="username-input" placeholder="don't worry, you can change this later"> 
+        <br>
+        <br> 
+         <button onclick="setUsername()"> Continue </button>
+
+    </div>
+
+<script>
+    function $(id){ return document.getElementById(id) }
+
+    function setUsername(){
+
+       let username = $("username-input").value.trim()
+
+       if(username.includes(" ") ==  true){
+             $("username-input").value = ""
+             $("username-input").placeholder = "no spaces, please"
+       }
+
+       else{
+          fetch('/new-profile',
+               {
+                   method: "POST",
+                   body: JSON.stringify({
+                       key: "walletSignature",
+                       type: "updateProfile",
+                       username: username,
+                   }),
+                   headers: {
+                       "Content-Type": "application/json"
+                   }
+               }
+           ).then((response) => {
+               if (response.ok) {
+                   return response.json();
+               }
+               throw new Error('Something went wrong');
+           })
+               .then((responseJson) => {
+
+                   console.log(responseJson)
+
+                   if(responseJson.success ==  true){
+                        window.location = "/profile"
+                   }
+
+                   else{
+                     $("username-input").value = ""
+                       $("username-input").placeholder = "username already taken"
+                   }
+
+               })
+               .catch((error) => {
+                   console.log(error)
+               });
+       }
+
+       }
+    
+</script>
+</body>
+
+
+</html>

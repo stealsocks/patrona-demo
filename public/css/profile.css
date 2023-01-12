@@ -1,0 +1,83 @@
+
+
+h1{
+    margin-bottom: 0px;
+}
+
+#bio{
+    margin-top: 40px;
+}
+
+body{
+    font-size: 18px;
+}
+
+a{
+    color: var(--main-color)
+}
+
+.list{
+    width: 100%
+}
+
+.list-item{
+    margin: 20px 0px;
+    border: solid 1px var(--main-color);
+    padding: 20px;
+    border-radius: var(--radius);
+}
+
+.list-item-title{
+    font-size: 24px;
+    margin-bottom: 5px;
+    width: 70%;
+    display: inline-block;
+}
+
+.feed-item-list-entry{
+    margin-bottom: 20px;
+}
+
+.feed-item-list {
+    width: calc(100% - 40px);
+    margin: 20px 0px 0px 0px;
+    padding: 20px 20px 0px 20px;
+    border: solid 1px var(--main-color);
+    border-radius: var(--radius);
+    
+}
+
+.top-right {
+    width: 29%;
+    display: inline-block;
+    text-align: right;
+
+}
+
+.left {
+    width: 70%;
+    display: inline-block;
+}
+
+.right {
+    width: 29%;
+    display: inline-block;
+    text-align: right;
+}
+
+.paid{
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.list-title{
+    font-size: 28px;
+    font-weight: 600;
+    margin: 30px 0px 20px 0px;
+}
+
+.pledge{
+    width: 100%;
+    font-size: 18px;
+    margin: 20px 0px;
+}

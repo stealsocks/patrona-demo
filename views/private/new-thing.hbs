@@ -1,0 +1,92 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/new-thing.css" />
+</head>
+
+<body>
+    {{> nav }}
+
+    <main>
+        <h1>
+            New Thing
+        </h1>
+        <div id="update-holder">
+            <div id="update-title"> Begin <span id="live-name">a new Thing </span></div>
+
+            <div class="input-header">Name:</div>
+            <input id="thing-name-input" placeholder="Choose a name for your new Thing" >
+
+            <div class="input-header">Description:</div>
+
+            <textarea id="thing-description-input"
+                placeholder="Provide a short description of the thing you’re doing, you could also mention why and how you’re going to do it..."></textarea>
+
+            <div class="input-header">Target number of things:</div>
+            <input type="number" placeholder="100" id="thing-iterations-input">
+
+            {{!-- <div class="input-header">Connect a wallet:</div>
+            <button id="thing-wallet-button"> Connect </button>  --}}
+
+            <button id="update-confirm-button" onclick="startNewThing()"> Begin Thing </button>
+
+        </div>
+    </main>
+
+    <script>
+
+        function $(id) { return document.getElementById(id) }
+
+        function startNewThing() {
+
+            let thingName = $("thing-name-input").value
+            let thingDescription = $("thing-description-input").value
+            let thingIterations = Number($("thing-iterations-input").value)
+
+               fetch('/new-thing',
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        key: "walletSignature",
+                        type: "updateProfile",
+                        thingName: thingName,
+                        thingDescription: thingDescription,
+                        thingIterations: thingIterations
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
+            ).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Something went wrong');
+            })
+                .then((responseJson) => {
+
+                    console.log(responseJson)
+                    
+                    if (responseJson.success == true) {
+                        window.location = "/profile"
+                    }
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+
+            console.log(thingDescription, thingName, thingIterations)
+        }
+
+        $("thing-name-input").addEventListener( "input", function(){
+
+            $("live-name").innerHTML =  $("thing-name-input").value
+        })
+
+    </script>
+
+</body>
+
+</html>

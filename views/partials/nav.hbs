@@ -1,0 +1,22 @@
+<div id="nav-bar">
+    {{#if isLoggedIn}}
+    <a href="/profile"><div id="nav-profile-picture"></div></a>
+    {{/if}}
+    
+    <div class="nav-bar-element">
+        <a href="/funders"> Funders</a>
+    </div>
+        <div class="nav-bar-element">
+            <a href="/doers"> Doers</a>
+        </div>
+    <div class="nav-bar-element">
+        <a href="/Things"> Things</a>
+    </div>
+    {{#if isLoggedIn}}
+    {{else}}
+    <div class="nav-bar-element-special">
+        <b><a href="/login"> Login</a></b>
+    </div>
+    {{/if}}
+
+</div>

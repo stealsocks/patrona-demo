@@ -1,0 +1,111 @@
+
+#pop-up{
+    position: fixed;
+    display: none;
+    top: 32vh;
+    left: 35%;
+    background-color: var(--main-color);
+    color: var(--second-color);
+    padding: 20px 20px 20px 40px;
+    text-align: right;
+    width: 30%;
+    border: solid 1px white;
+    border-radius: var(--radius);
+}
+
+#close-pop-up{
+    cursor: pointer;
+}
+
+#pop-up-text{
+    text-align: left;
+    margin-top: 0px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+main{
+    position: relative;
+}
+
+#box-holder{
+    margin: 40px -10px;
+    width: fit-content;
+    position: relative;
+}
+
+.funding-button{
+    position: absolute;
+    top: 65px;
+    right: 60px}
+
+.hidden{
+    color: var(--second-color);
+    height: 20%;
+    text-align: center;
+    padding: 40% 0%;
+    font-size: 14px;
+    opacity: 0;
+    user-select: none;
+    cursor: pointer;
+}
+
+.hidden:hover{
+    opacity: 1;
+    transition: 0.8s ease all;
+}
+
+h1{
+    margin-bottom: 0px;
+    margin-left: -5px;
+    width: 70%
+}
+
+body {
+    font-size: 18px;
+}
+
+a {
+    color: var(--main-color)
+}
+
+.left {
+    width: 70%;
+    display: inline-block;
+    text-align: left;
+}
+
+.right {
+    width: 29%;
+    display: inline-block;
+    text-align: right;
+}
+
+h3{
+    font-size: 24px;
+}
+
+.funder-info{
+    width: 100%
+}
+
+.box{
+    width: 80px;
+    height: 80px;
+    background: var(--main-color);
+    display: inline-block;
+    margin: 10px;
+    border-radius: var(--radius);
+    border: solid 1px var(--main-color);
+    vertical-align: top;
+}
+
+.empty-box{
+    width: 80px;
+        height: 80px;
+        background: var(--second-color);
+        display: inline-block;
+        margin: 10px;
+        border-radius: var(--radius);
+        border: solid 1px var(--main-color);
+}

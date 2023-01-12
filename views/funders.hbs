@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/explore.css" />
+</head>
+<body>
+
+
+{{> nav }}
+
+
+<main>
+
+<h1>{{ pageName }}</h1>
+
+<div id="main-feed">
+
+{{#each feedObjects}}
+
+<div class="feed-item" id={{ this.userID }}>
+
+<div class="feed-item-title">
+{{this.username}} 
+</div>
+
+<div class="feed-item-subtitle">
+is funding {{ this.thingsBeingFunded.length }} Things
+</div> 
+
+<a href="funders/{{ this.username }}"><button class="feed-item-button"> Visit profile </button> </a>
+
+<div class="feed-item-list">
+    {{#each this.thingsBeingFunded}}
+
+    <div class="feed-item-list-entry">
+        <div class="left"> <a href="things/{{ this.thingID }}"> {{ this.thingName }} </a></div>
+        {{!-- <div class="right"> <a href="doers/{{ this.funderObjects.username }}"> {{ this.username }} </a></div> --}}
+    </div>
+
+    {{/each}}
+</div>
+
+</div>
+
+{{/each}}
+
+</div>
+
+</main>
+
+</body>
+</html>

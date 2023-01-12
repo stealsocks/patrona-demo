@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/thing.css" />
+</head>
+
+<body>
+
+{{> nav }}
+
+    <main>
+       
+        <h1>
+            {{ thingInfo.thingName }}
+        </h1>
+            {{#if thingInfo.isUsersThing}}
+            <a href="/things/{{ thingInfo.thingID }}/update"><button class="funding-button">Make an update</button></a>
+            {{else if thingInfo.isBeingFunded}}
+            <a href="/things/{{ thingInfo.thingID }}/defund"><button class="funding-button">Remove funds</button></a>
+            {{else}}
+            <a href="/things/{{ thingInfo.thingID }}/fund"><button class="funding-button">Begin funding</button></a>          
+            {{/if}}
+        being done by <a href="/doers/{{ thingInfo.doerName }}">{{ thingInfo.doerName }}</a>
+
+        <div id="box-holder">
+            {{#each thingInfo.thingUpdates}}
+
+                <div class="box" id="{{@key}}" data-text="{{this.updateDescription}}">
+                   <div class="hidden">{{ this.date }}</div>
+                </div>
+
+            {{/each}}
+
+            {{#times thingInfo.remainingIterations}}
+            <div class="empty-box"></div>
+            {{/times}}
+        </div>
+
+        <div id="funder-info">
+            <h3>Being funded by:</h3>
+
+            <div id="funder-list">
+                {{#each thingInfo.funderObjects}}
+                <div class="funder-list-element">
+                <div class="left"> <a href="/funders/{{ this.username }}"> {{ this.username }}</a> </div>
+                <div class="right"> ${{ this.totalAmount }} </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </main>
+
+<div id="pop-up">
+<div id="close-pop-up" onclick="closePopUp()">X</div>
+<div id="pop-up-text"></div>
+
+</div>
+
+<script>
+
+    function $(id){ return document.getElementById(id) }
+
+    function openPopUp(text){
+
+        $("pop-up-text").innerText = text 
+        $("pop-up").style.display = "block"
+    }
+
+    function closePopUp(){
+        $("pop-up").style.display = "none"
+    }
+
+    for(let ele of document.getElementsByClassName("box")){
+
+        ele.addEventListener("click", () => openPopUp(ele.dataset.text))
+
+    }
+</script>
+</body>
+
+</html>

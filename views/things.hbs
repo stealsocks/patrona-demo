@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/explore.css" />
+</head>
+<body>
+
+{{> nav }}
+
+
+<main>
+
+<h1>{{ pageName }}</h1>
+
+<div id="main-feed">
+{{#each feedObjects}}
+
+<div class="feed-item" id={{ this.thingId }}>
+
+    <div class="feed-item-title">
+        {{this.thingName}}
+    </div>
+
+    <div class="feed-item-subtitle">
+        being done by <a href="doers/{{ this.doerName }}">{{ this.doerName }} </a>
+    </div>
+
+    <a href="/things/{{ this.thingID }}"><button class="feed-item-button"> See Thing page </button> </a>
+
+    <div class="feed-item-list">
+        {{ thingDescription }}
+        {{!-- {{#each updates}}
+
+        <div class="feed-item-list-entry">
+            <div class="left"> {{ this.iteration }} </div>
+            <div class="right"> {{ this.date }}</div>
+        </div>
+
+        {{/each}} --}}
+    </div>
+
+</div>
+
+{{/each}}
+
+</div>
+
+</main>
+
+</body>
+</html>

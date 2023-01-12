@@ -1,0 +1,46 @@
+<html>
+
+<head> 
+	<title>Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=0.8" />
+	
+
+	<style>
+	
+	button{
+		width: 300px;
+		padding: 15px 20px;
+		background-color: black;
+		color: white;
+		font-size: 18px;
+		cursor: pointer;
+	}
+
+	#center{
+		width: 100%;
+		margin-top: 40vh;
+		text-align: center;
+	}
+
+	</style>
+</head>
+
+<body>
+	<div id="center">
+	<button onclick="login()"> Login with Metamask </button>
+	</div>
+
+	<script>
+		function login(){
+
+			let success = true
+
+			if(success == true){
+				window.location = "/new-profile"
+			}
+
+		}
+	</script>
+</body>
+
+</html>

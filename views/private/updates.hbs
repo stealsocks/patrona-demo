@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/explore.css" />
+</head>
+
+<body>
+    {{> nav }}
+
+
+    <main>
+
+        <h1>Updates</h1>
+
+        <div id="main-feed">
+            {{#each feedObjects}}
+
+            <div class="feed-item" id={{ this.thingId }}>
+
+                <div class="feed-item-title">
+                    {{this.thingName}} ({{ this.currentIteration }}/{{ this.totalIterations }})
+                </div>
+
+                <div class="feed-item-subtitle">
+                {{ this.updateAmount }} paid to <a href="doers/{{ this.thingDoer }}">{{ this.thingDoer }} </a>
+                </div>
+                <br>
+                <div> {{ this.dateOfUpdate }} </div>
+
+                <a href="/things/{{ this.thingId }}"><button class="feed-item-button"> See Thing page </button> </a>
+
+            </div>
+
+            {{/each}}
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

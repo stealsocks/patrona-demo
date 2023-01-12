@@ -1,0 +1,60 @@
+body{
+    font-size: 18px;
+}
+
+.faded{
+    color: var(--faded-color)
+}
+
+#update-holder{
+    width: 100%;
+    padding: 25px 30px;
+    border: solid 1px var(--main-color);
+    border-radius: var(--radius);
+    position: relative;
+}
+
+input{
+    padding: 10px;
+    font-size: 18px;
+    width: 60%;
+    border-radius: var(--radius);
+    border: solid 1px var(--main-color);
+    font-family: 'Urbanist';
+}
+
+#thing-description-input{
+    width: calc(100%);
+    height: 150px;
+    margin-bottom: 0px;
+    border-radius: var(--radius);
+    resize: none;
+    font-size: 18px;
+    padding: 10px;
+    font-family: 'Urbanist';
+    line-height: 1.4em;
+}
+
+#update-title{
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.input-header{
+    margin-top: 30px;
+    margin-bottom: 7px;
+}
+
+.single-line{
+    margin-bottom: 55px;
+}
+
+#update-confirm-button{
+   position: absolute;
+   right: 30px;
+   bottom: 25px;
+}
+
+/* #thing-wallet-button{
+    margin-bottom: 55px;
+} */

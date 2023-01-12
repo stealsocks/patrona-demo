@@ -1,0 +1,161 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/my-profile.css" />
+</head>
+
+<body>
+    <div id="nav-bar">
+        <div id="upload-profile-picture"> 
+            <div id="edit-profile-picture">Change</div>
+        </div>
+
+        <div class="nav-bar-element">
+            <a href="/funders"> Funders</a>
+        </div>
+
+        <div class="nav-bar-element">
+            <a href="/doers"> Doers</a>
+        </div>
+
+        <div class="nav-bar-element">
+            <a href="/Things"> Things</a>
+        </div>
+    
+    </div>
+
+  
+    <main>
+        <h1> {{ pageName }}</h1>
+        <div id="start-new-thing"> <a href="/new"> Start a new Thing </a> </div>
+    <div class="fixed-height-split">
+        
+            Change your username:
+            <input value="{{ userInfo.username }}" id="edit-username">
+            Edit your bio:
+            <textarea id="edit-bio">{{ userInfo.bio }}</textarea>
+
+            <button id="save-edits" onclick="updateProfile()">Save changes</button>
+            </div>
+
+    <div class="fixed-height-split">
+        <h3>Updates</h3>
+        {{!-- <button class="top-left">See All</button> --}}
+        <div class="main-feed updates-feed">
+            {{#each updateObjects}}
+        
+            <div class="feed-item" id={{ this.thingID }}>
+            
+                <div class="update-item-subtitle">
+                    {{{this.message}}}
+                </div>
+        
+            </div>
+        
+            {{/each}}
+        
+        </div>
+
+    </div>
+        
+    <div id="split1"> 
+        <h3>My Things</h3>
+        <div class="main-feed">
+            {{#each userInfo.thingsBeingDone}}
+        
+            <div class="feed-item" id={{ this.thingID }}>
+        
+                <div class="feed-item-title">
+                <a href="/things/{{ this.thingID }}"> {{this.thingName}}</a> ({{ this.completeIterations }}/{{ this.totalIterations }})
+                </div>
+        
+                <div class="feed-item-subtitle">
+                    has {{ this.totalAmount }} in total funding
+                </div>
+        
+            </div>
+        
+            {{/each}}
+        
+        </div>
+    </div>
+
+    <div id="split2">
+        <h3>Funded Things</h3> 
+
+        <div class="main-feed">
+            {{#each userInfo.thingsBeingFunded }}
+        
+            <div class="feed-item" id={{ this.thingID }}>
+            
+                <div class="feed-item-title">
+                    <a href="/things/{{ this.thingID }}"> {{this.thingName}}</a> ({{ this.completeIterations }}/{{
+                    this.totalIterations }})
+                </div>
+            
+                <div class="feed-item-subtitle">
+                    is being done by <a href="/doers/{{ this.doerName }}">{{ this.doerName }}</a>
+                </div>
+            
+            </div>
+        
+            {{/each}}
+        
+        </div>
+    </div>
+
+       
+
+    </main>
+
+<script>
+
+    function $(id){ return document.getElementById(id) }
+
+    function updateProfile(){
+        let newUsername = $("edit-username").value
+        let newBio =  $("edit-bio").value
+
+        console.log(newUsername, newBio)
+        
+        fetch('/profile',
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    key: "thirdwallet",
+                    type: "updateProfile",
+                    newUsername: newUsername,
+                    newBio: newBio
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        ).then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Something went wrong');
+        })
+            .then((responseJson) => {
+
+                console.log(responseJson)
+
+                if(responseJson.redirect == true){
+                     window.location = "/profile"
+                }
+
+                else{
+                    $("edit-bio").value = newBio
+                }
+
+            })
+            .catch((error) => {
+                console.log(error)
+            }); 
+    }
+</script>
+</body>
+
+</html>
