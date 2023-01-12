@@ -250,36 +250,49 @@ app.get("/things", isLoggedIn, async (req, res) => {
 
 app.get("/things/:id", isLoggedIn, async (req, res) => {
 
-    let thingID = req.params.id
-    let userID = res.locals.key
-    let isLoggedIn = res.locals.isLoggedIn
-    let thingInfo = await getDataForThing(thingID)
+    try{
+        let thingID = req.params.id
+        let userID = res.locals.key
+        let isLoggedIn = res.locals.isLoggedIn
+        let thingInfo = await getDataForThing(thingID)
 
-    thingInfo.isBeingFunded = false
+        thingInfo.isBeingFunded = false
 
-    if(thingInfo.funders.includes(userID)){
-        thingInfo.isBeingFunded = true
+        if(thingInfo.funders.includes(userID)){
+            thingInfo.isBeingFunded = true
+        }
+
+        if(thingInfo.doer == userID){
+            thingInfo.isUsersThing = true
+        }
+
+        res.render("thing", {
+            thingInfo: thingInfo,
+            isLoggedIn: isLoggedIn
+        })
     }
 
-    if(thingInfo.doer == userID){
-        thingInfo.isUsersThing = true
+    catch(error){
+        console.log(error)
     }
-
-    res.render("thing", {
-        thingInfo: thingInfo,
-        isLoggedIn: isLoggedIn
-    })
 })
 
 app.get("/things/:id/fund", isLoggedIn, async (req, res) => {
 
-    let thingID = req.params.id
-    let userID = res.locals.key
-    let thingInfo = await getDataForThing(thingID)
-    thingInfo.isLoggedIn = res.locals.isLoggedIn
+    try{
+        let thingID = req.params.id
+        let userID = res.locals.key
+        let thingInfo = await getDataForThing(thingID)
+        thingInfo.isLoggedIn = res.locals.isLoggedIn
 
-    res.render("private/fund", thingInfo)
+        res.render("private/fund", thingInfo)
+    }
+
+    catch(error){
+        console.log(error)
+    }
 })
+
 
 app.get("/things/:id/defund", isLoggedIn, async (req, res) => {
 
@@ -305,22 +318,28 @@ app.get("/things/:id/defund", isLoggedIn, async (req, res) => {
 
 app.get("/things/:id/update", isLoggedIn, async (req, res) => {
 
-    thingID = req.params.id
-    let thingInfo = await getDataForThing(thingID)
-    let isLoggedIn = res.locals.isLoggedIn
+    try{
+        thingID = req.params.id
+        let thingInfo = await getDataForThing(thingID)
+        let isLoggedIn = res.locals.isLoggedIn
 
-    let payOut = 0
+        let payOut = 0
 
-    for(let ele of thingInfo.funderObjects){
-        payOut += ele.payload
+        for(let ele of thingInfo.funderObjects){
+            payOut += ele.payload
+        }
+
+        res.render("private/update-thing",
+        {isLoggedIn: isLoggedIn,
+        thingName: thingInfo.thingName,
+        payOut: Math.floor(payOut * 100)/100,
+        thingID: thingID,
+        currentIteration: thingInfo.completeIterations})
     }
 
-    res.render("private/update-thing",
-    {isLoggedIn: isLoggedIn,
-    thingName: thingInfo.thingName,
-    payOut: Math.floor(payOut * 100)/100,
-    thingID: thingID,
-    currentIteration: thingInfo.completeIterations})
+    catch(error){
+        console.log(error)
+    }
 })
 
 app.get("/new", isLoggedIn, async (req, res) => {
@@ -879,8 +898,8 @@ let userDB = {
         username: "Judah",
         userID: "firstwallet",
         bio: "Cool bio",
-        thingsBeingFunded: ["138393"],
-        thingsBeingDone: [],
+        thingsBeingFunded: [],
+        thingsBeingDone: ["138393", "155393"],
         totalAmountPledged: 100
     },
 
@@ -888,8 +907,8 @@ let userDB = {
         username: "Patrona",
         userID: "secondwallet",
         bio: "Cool bio",
-        thingsBeingFunded: [],
-        thingsBeingDone: ["138393"],
+        thingsBeingFunded: ["138393", "155393"],
+        thingsBeingDone: [],
         totalAmountPledged: 0
     },
 
@@ -923,6 +942,32 @@ let thingDB = {
         funders: ["secondwallet"],
         funderObjects: [{ userID: "secondwallet", totalAmount: 100, amountLeft: 100 - 3.33 * 4, username: "Patrona", from: 0, to: 30, payload: 3.33 }],
         startDate: "11/11/11"
+    },
+
+    "155393": {
+        thingID: "155393",
+        contractID: "bad",
+        thingName: "Cooler thing",
+        thingDescription: "Woah, a cooler thing with a  longer description.",
+        doer: "firstwallet",
+        doerName: "Judah",
+        totalIterations: 50,
+        completeIterations: 10,
+        thingUpdates: {
+            1: { date: "11/11/11", updateDescription: "This is a brief message about the update" },
+            2: { date: "14/10/20", updateDescription: "Description" },
+            3: { date: "12/01/22", updateDescription: "I’m now at the last section of the tour, “Concurrency”, which starts with “Goroutines”... I might take this opportunity to Homer Simpson into the bushes and cook dinner." },
+            4: { date: "12/01/22", updateDescription: "The past two years were a wild chase for answers. A question that had been lodged in my head for months: What does it mean to natively design for screens?"},
+            5: { date: "12/01/22", updateDescription: "I’m now at the last section of the tour, “Concurrency”, which starts with “Goroutines”... I might take this opportunity to Homer Simpson into the bushes and cook dinner." },
+            6: { date: "12/01/22", updateDescription: "The past two years were a wild chase for answers. A question that had been lodged in my head for months: What does it mean to natively design for screens?"},
+            7: { date: "12/01/22", updateDescription: "I’m now at the last section of the tour, “Concurrency”, which starts with “Goroutines”... I might take this opportunity to Homer Simpson into the bushes and cook dinner." },
+            8: { date: "12/01/22", updateDescription: "The past two years were a wild chase for answers. A question that had been lodged in my head for months: What does it mean to natively design for screens?"},
+            9: { date: "12/01/22", updateDescription: "I’m now at the last section of the tour, “Concurrency”, which starts with “Goroutines”... I might take this opportunity to Homer Simpson into the bushes and cook dinner." },
+            10: { date: "12/01/22", updateDescription: "The past two years were a wild chase for answers. A question that had been lodged in my head for months: What does it mean to natively design for screens?" }
+        },
+        funders: ["secondwallet"],
+        funderObjects: [{ userID: "secondwallet", totalAmount: 40, amountLeft: 20, username: "Patrona", from: 0, to: 20, payload: 2}],
+        startDate: "12/01/23"
     }
 }
 
@@ -994,21 +1039,87 @@ let updatesDB = {
 let usernames = ["Judah", "Patrona"]
 
 let contract = {
-    totalAmount: 0,
-    totalIterations: 100,
-    completeIterations: 0,
-    doer: "secondwallet",
-    thingName: "Cool Thing",
-    thingID: "random uuid",
-    contractID: "md5 hash of thingName and wallet",
-    startDate: "proabably no need to add this",
+    totalAmount: 0, // the pool of all pledged funds
+    totalIterations: 100, // the target number of iterations, chosen in browser and sent to contract
+    completeIterations: 0, // how many have been completed so far
+    paidOutPool: 0, // the pool that holds funds that have been paid to the doer for completing iterations
+    doer: "secondwallet", // doer's wallet (0x29wjdg249wg84...)
+    thingName: "Cool Thing", // immutable thing name, chosen in browser and sent to contract
+    thingID: "random uuid", // global identifier for each thing, generated in browser and sent to contract
+    contractID: "md5 hash of thingName and wallet", //i guess these are automatically generated on the blockchain?
+    startDate: "proabably no need to add this", // probably readable from block history
+
+    // funders is a list of objects representing each wallet that has pledged funds to the Thing
     funders: {
         "secondwallet": {
-            amountPledged: 0,
-            fromIteration: 10,
-            toIteration: 100
+            amountPledged: 100,
+            fromIteration: 0,
+            toIteration: 30,
+            payoutSize: 3.33,
+            walletAddress: "secondwallet"
+        }
+    },
+
+    // start funding a Thing
+    pledge: function (walletaddress, amount, from, to) {
+
+        // check that the range to be funded is within bounds 
+        if (to <= this.totalIterations && from >= this.completeIterations) {
+
+            this.funders[walletaddress] = {
+                amountPledged: amount,
+                amountLeft: amount,
+                fromIteration: from,
+                toIteration: to,
+                payoutSize: amount / from - to,
+                walletAddress: walletaddress
+            }
+
+            this.totalAmount += amount
+            // send amount from funders wallet to contract pool (totalAmount)
+        }
+    },
+
+    // defund a Thing and get your remaining money back
+    unpledge: function (walletaddress) {
+
+        this.totalAmount -= this.funders[walletaddress].amountLeft
+        // then send amountLeft to funders wallet
+
+        // remove wallet from list of funders
+        delete this.funders[walletaddress]
+    },
+
+    // increment the iteration count and pay out the pledged amounts
+    iterationCompleted: function () {
+
+        // check that the iteration is less than or equsl to the target declared when the contract was created
+        if (this.completeIterations < this.totalIterations) {
+
+            this.completeIterations += 1
+
+            // go through each object in the list of funders
+            for (let ele of Object.values(this.funders)) {
+
+                // check if they are meant to fund the current iteration
+                if (ele.fromIteration >= this.completeIterations && ele.toIteration >= this.completeIterations) {
+
+                    // decrement amountLeft in their accounts by their payOutSize
+                    this.funders[ele.walletAddress].amountLeft -= ele.walletAddress.payoutSize
+
+                    // decrement the the pool's global pledged totalAmount and add it to the paidOut pool
+                    this.totalAmount -= ele.walletAddress.payoutSize
+                    this.paidOutPool += ele.walletAddress.payoutSize
+                }
+            }
+
+        }
+
+        else {
+            // if currentIteration > totalIterations, then pay out and delete the contract
+            console.log("pay out the totalAmount pool and delete the contract")
         }
     }
 
 }
-                               
+
